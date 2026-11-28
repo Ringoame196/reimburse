@@ -183,7 +183,7 @@ class ExpenseHandler(BaseHTTPRequestHandler):
 if __name__ == "__main__":
     init_db()
     server = ThreadingHTTPServer(("127.0.0.1", 8000), ExpenseHandler)
-    print("サーバー起動: http://127.0.0.1:8000/form")
+    print("サーバー起動: http://127.0.0.1:8000/view")
     try:
         server.serve_forever()
     except KeyboardInterrupt:
