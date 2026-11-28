@@ -4,6 +4,20 @@ const items = document.getElementById('items');
 const totalAmountEl = document.getElementById('total-amount');
 const days = ["日", "月", "火", "水", "木", "金", "土"];
 
+function formatDateWithDay(dateStr) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(dateStr).trim());
+  if (!match) return String(dateStr);
+
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const localDate = new Date(year, month - 1, day);
+  if (Number.isNaN(localDate.getTime())) return String(dateStr);
+
+  const dayOfWeek = days[localDate.getDay()];
+  return `${dateStr}(${dayOfWeek})`;
+}
+
 async function getJsonData() {
   try {
     const res = await fetch('/api/expenses');
@@ -65,10 +79,7 @@ function renderExpenses(expenses) {
     idTd.textContent = item.id;
 
     const dateTd = document.createElement('td');
-    const dateText = item.date;
-    const date = new Date(dateText);
-    const dayOfWeek = days[date.getDay()];
-    dateTd.textContent = dateText + '(' + dayOfWeek + ')';
+    dateTd.textContent = formatDateWithDay(item.date);
 
     const contentTd = document.createElement('td');
     contentTd.textContent = item.content;
